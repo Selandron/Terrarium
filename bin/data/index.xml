@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scope name="main_scope">
+	<graphics>
+		<tilesets>
+			<file type="1" key="mud_block_tileset">mud_block_tileset.png</file>
+		</tilesets>
+		<file type="1" key="wood_tileset">wood_tileset.png</file>
+	</graphics>
+	<audio>
+	</audio>
+</scope>

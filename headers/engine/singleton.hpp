@@ -3,6 +3,8 @@
 
 /*
 	Template Singleton thread-safe based on this tutorial : https://come-david.developpez.com/tutoriels/dps/?page=Singleton
+
+	Author : Etienne Andrieu
 */
 
 #include <SFML/System.hpp>
