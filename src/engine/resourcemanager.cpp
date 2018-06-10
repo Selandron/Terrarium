@@ -113,7 +113,7 @@ bool tr::ResourceManager::ParseXMLTree(tinyxml2::XMLNode * root, std::string pat
 			if (element && element->Attribute("key") && element->Attribute("type") && element->GetText()) //Has enougth attributes
 			{									
 				tr::Resource * t = LoadResource(element, path);	//Load of the Resource								
-				if (t && !t->IsLoaded())
+				if (!t || !t->IsLoaded())
 					return false;
 				//this->m_resources.insert(std::pair<std::string, tr::Resource *>(key, t));
 				this->m_resourceCount++;
@@ -137,11 +137,16 @@ tr::Resource * tr::ResourceManager::LoadResource(tinyxml2::XMLElement * element,
 	std::string key = element->Attribute("key");
 	std::string file = element->GetText();
 	file = path  + file;
-	tr::RESOURCE_TYPE type = (tr::RESOURCE_TYPE)element->IntAttribute("type");
+	RESOURCE_TYPE type = (RESOURCE_TYPE)element->IntAttribute("type");
 
 	switch(type)
 	{
 		case RESOURCE_TYPE::RESOURCE_GRAPHIC:
+			ResourceTexture * t;
+			t = new ResourceTexture(key, file);
+			if(t)
+				t->Load();
+			return t;
 			break;
 
 		default:

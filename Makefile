@@ -2,7 +2,7 @@ CC=g++
 
 MAIN=main.o
 TINYXML2=tinyxml2.o
-ENGINE=resourcemanager.o
+ENGINE=resourcemanager.o resourcetexture.o
 
 EXEC=terrarium.exe
 HEADERS=-Iheaders\tinyxml2 -Iheaders\engine

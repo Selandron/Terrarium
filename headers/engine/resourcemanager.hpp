@@ -12,6 +12,7 @@
 #define UINT unsigned int
 
 #include "resource.hpp"
+#include "resourcetexture.hpp"
 #include "singleton.hpp"
 #include <map>
 #include <string>

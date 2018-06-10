@@ -27,6 +27,7 @@ class Resource
 {
     public:
         Resource() : m_resourceID("null"), m_filename("null"), m_type(RESOURCE_NULL), m_loaded(false) {}        //Constructor
+        Resource(std::string id, std::string filename) : m_resourceID(id), m_filename(filename), m_type(RESOURCE_NULL), m_loaded(false) {}        //Constructor
         virtual ~Resource() {}                                                                                  //Destructor
         virtual void Load() = 0;                                                                                //Loading function (need to be implemented)
         virtual void Unload() = 0;                                                                              //Unload function (need to be implemented)
