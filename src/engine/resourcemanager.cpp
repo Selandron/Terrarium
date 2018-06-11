@@ -2,7 +2,7 @@
 
 tr::Resource * tr::ResourceManager::FindResourceByID(std::string ID)
 {
-	for (std::map<std::string,std::map<std::string, tr::Resource *> >::iterator it = this->m_resources.begin(); it != this->m_resources.end(); ++it)
+	for (std::map<std::string,std::map<std::string, tr::Resource *> * >::iterator it = this->m_resources.begin(); it != this->m_resources.end(); ++it)
 		if (FindResourceByID(ID, it->first))
 			return FindResourceByID(ID, it->first);
 	return NULL;
@@ -10,11 +10,11 @@ tr::Resource * tr::ResourceManager::FindResourceByID(std::string ID)
 
 tr::Resource * tr::ResourceManager::FindResourceByID(std::string ID, std::string scope)
 {
-	std::map<std::string,std::map<std::string, tr::Resource *> >::iterator it = this->m_resources.find(scope);
+	std::map<std::string,std::map<std::string, tr::Resource *> * >::iterator it = this->m_resources.find(scope);
 	if (it == this->m_resources.end())
 		return NULL;
-	std::map<std::string, tr::Resource *>::iterator sub = it->second.find(ID);
-	if (sub == it->second.end())
+	std::map<std::string, tr::Resource *>::iterator sub = it->second->find(ID);
+	if (sub == it->second->end())
 		return NULL;
 
 	return sub->second; 
@@ -44,8 +44,13 @@ bool tr::ResourceManager::LoadFromFileXML(std::string filename)
 		//Remove existing scope if exist
 		ClearScope(scope);
 
-		if (!ParseXMLTree(scopeEl, path))
+		//Create scope and map
+		std::map<std::string, Resource *> * dup = new std::map<std::string, Resource *>();
+
+		if (!ParseXMLTree(scopeEl, path, dup))
 			return false;
+
+		this->m_resources.insert(std::pair<std::string, std::map<std::string, Resource *> * >(scope, dup));
 	}
 	else if (scopeEl->NoChildren())	//Error No children
 	{
@@ -85,9 +90,13 @@ bool tr::ResourceManager::LoadFromFileXML(std::string filename, std::string scop
 
 		//Remove existing scope if exist
 		ClearScope(scope);
+		//Create scope and map
+		std::map<std::string, Resource *> * dup = new std::map<std::string, Resource *>();
 
-		if (!ParseXMLTree(scopeEl, path))
+		if (!ParseXMLTree(scopeEl, path, dup))
 			return false;
+
+		this->m_resources.insert(std::pair<std::string, std::map<std::string, Resource *> * >(scope, dup));
 	}
 	else if (scopeEl->NoChildren())	//Error No children
 	{
@@ -102,7 +111,7 @@ bool tr::ResourceManager::LoadFromFileXML(std::string filename, std::string scop
 	return true;
 }
 
-bool tr::ResourceManager::ParseXMLTree(tinyxml2::XMLNode * root, std::string path)
+bool tr::ResourceManager::ParseXMLTree(tinyxml2::XMLNode * root, std::string path, std::map<std::string, Resource *> * dup)
 {
 	tinyxml2::XMLNode * childNode = root->FirstChildElement();
 	while (childNode)	//Parse all type of resources
@@ -112,18 +121,20 @@ bool tr::ResourceManager::ParseXMLTree(tinyxml2::XMLNode * root, std::string pat
 			tinyxml2::XMLElement * element = childNode->ToElement();
 			if (element && element->Attribute("key") && element->Attribute("type") && element->GetText()) //Has enougth attributes
 			{									
+				std::string key = element->Attribute("key");
 				tr::Resource * t = LoadResource(element, path);	//Load of the Resource								
 				if (!t || !t->IsLoaded())
 					return false;
-				//this->m_resources.insert(std::pair<std::string, tr::Resource *>(key, t));
+				dup->insert(std::pair<std::string, tr::Resource *>(key, t));
 				this->m_resourceCount++;
 			}
 		}
 		else 											//If not, recursive loading
 		{
-			path += childNode->Value();
-			path += "/";
-			if (!ParseXMLTree(childNode, path))
+			std::string newPath = path;
+			newPath += childNode->Value();
+			newPath += "/";
+			if (!ParseXMLTree(childNode, newPath, dup))
 				return false;
 		}
 
@@ -158,7 +169,7 @@ tr::Resource * tr::ResourceManager::LoadResource(tinyxml2::XMLElement * element,
 
 void tr::ResourceManager::Clear()
 {
-	for (std::map<std::string,std::map<std::string, tr::Resource *> >::iterator it = this->m_resources.begin(); it != this->m_resources.end(); ++it)
+	for (std::map<std::string,std::map<std::string, tr::Resource *> * >::iterator it = this->m_resources.begin(); it != this->m_resources.end(); ++it)
 		ClearScope(it->first);
 	this->m_resources.clear();
 	this->m_resourceCount = 0;
@@ -166,14 +177,14 @@ void tr::ResourceManager::Clear()
 
 void tr::ResourceManager::ClearScope(std::string scope)
 {
-	std::map<std::string,std::map<std::string, tr::Resource *> >::iterator it = this->m_resources.find(scope); 	//Iterator on the map
+	std::map<std::string,std::map<std::string, tr::Resource *> * >::iterator it = this->m_resources.find(scope); 	//Iterator on the map
 
 	if (it == this->m_resources.end()) //If not found, OK
 		return;
 
 	//If found, remove all in sub map (free memory)
-	std::map<std::string, tr::Resource *> resourcesMap = it->second;
-	for (std::map<std::string, tr::Resource *>::iterator sub = resourcesMap.begin(); sub != resourcesMap.end(); ++sub)
+	std::map<std::string, tr::Resource *> * resourcesMap = it->second;
+	for (std::map<std::string, tr::Resource *>::iterator sub = resourcesMap->begin(); sub != resourcesMap->end(); ++sub)
 	{
 		if (sub->second)
 		{
@@ -182,7 +193,19 @@ void tr::ResourceManager::ClearScope(std::string scope)
 		}
 		this->m_resourceCount--;
 	}
-	resourcesMap.clear();
+	resourcesMap->clear();
+	delete resourcesMap;
 	//Remove in first map the entry 
 	this->m_resources.erase(it);
+}
+
+void tr::ResourceManager::PrintManager()
+{
+	for (std::map<std::string,std::map<std::string, tr::Resource *> * >::iterator it = this->m_resources.begin(); it != this->m_resources.end(); it++)
+	{
+		std::cout << "Scope : " << it->first << std::endl;
+		std::map<std::string, tr::Resource *> * resourcesMap = it->second;
+		for (std::map<std::string, tr::Resource *>::iterator sub = resourcesMap->begin(); sub != resourcesMap->end(); ++sub)
+			std::cout << "-- Key : " << sub->first << " -- Target : " << (int)sub->second << " -- Type : " << sub->second->GetResourceType() << std::endl;  
+	}
 }

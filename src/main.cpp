@@ -1,12 +1,22 @@
 #include <SFML/Graphics.hpp>
+#include "resourcemanager.hpp"
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    window.setFramerateLimit(144);
 
-    while (window.isOpen())
+    tr::ResourceManager * resMan = tr::ResourceManager::GetInstance();
+    resMan->LoadFromFileXML("index.xml");
+    resMan->PrintManager();
+    resMan->ClearScope("main_scope");
+    resMan->LoadFromFileXML("index.xml", "second_scope");
+    resMan->PrintManager();
+
+    sf::CircleShape shape(100.f);
+    shape.setTexture(_GET_TEXTURE("chaud"));
+
+    while (window.isOpen()) 
     {
         sf::Event event;
         while (window.pollEvent(event))

@@ -35,18 +35,21 @@ class ResourceManager : public tr::Singleton<ResourceManager>
 		void Clear();																//Empty ALL the resources (careful with the use)
 		bool LoadFromFileXML(std::string filename);									//Load an XML file (in data folder) to parse resources (first scope)
 		bool LoadFromFileXML(std::string filename, std::string scopename);			//Load an XML file (in data folder) with a scope wanted to parse resources
+		void PrintManager();
 		UINT GetResourceCount() const { return m_resourceCount; }		
 	protected:
 	    UINT m_resourceCount; //Total number of resources unloaded and loaded
-	    std::map<std::string, std::map<std::string, Resource *> > m_resources; //Map of form <scope ID, Resource map>
+	    std::map<std::string, std::map<std::string, Resource *> * > m_resources; //Map of form <scope ID, Resource map>
 
 	private:
 		ResourceManager() : m_resourceCount(0) {};						//Private Constructor (only called once in Singleton)
 		~ResourceManager() {};											//Private Destructor (only called once)
 
-		bool ParseXMLTree(tinyxml2::XMLNode * root, std::string path);		//Recursive function to parse XML tree
+		bool ParseXMLTree(tinyxml2::XMLNode * root, std::string path, std::map<std::string, Resource *> * dup);		//Recursive function to parse XML tree
 		tr::Resource * LoadResource(tinyxml2::XMLElement * element, std::string path); //Function to load resource
 };
+
+#define _GET_TEXTURE(key) ((tr::ResourceTexture *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetTexture()
 
 }
 #endif
