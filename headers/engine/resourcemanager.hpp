@@ -50,6 +50,7 @@ class ResourceManager : public tr::Singleton<ResourceManager>
 };
 
 #define _GET_TEXTURE(key) ((tr::ResourceTexture *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetTexture()
+#define _GET_TEXTURE_SCOPE(key, scope) ((tr::ResourceTexture *)(tr::ResourceManager::GetInstance()->FindResourceByID(key, scope)))->GetTexture()
 
 }
 #endif
