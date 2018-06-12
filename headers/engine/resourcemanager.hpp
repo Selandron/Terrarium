@@ -15,6 +15,7 @@
 #include "resourcetexture.hpp"
 #include "resourcesoundbuffer.hpp"
 #include "resourcemusic.hpp"
+#include "resourcefont.hpp"
 #include "singleton.hpp"
 #include <map>
 #include <string>
@@ -59,6 +60,9 @@ class ResourceManager : public tr::Singleton<ResourceManager>
 
 #define _GET_MUSIC(key) ((tr::ResourceMusic *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetMusic()
 #define _GET_MUSIC_SCOPE(key, scope) ((tr::ResourceMusic *)(tr::ResourceManager::GetInstance()->FindResourceByID(key, scope)))->GetMusic()
+
+#define _GET_FONT(key) ((tr::ResourceFont *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetFont()
+#define _GET_FONT_SCOPE(key, scope) ((tr::ResourceFont *)(tr::ResourceManager::GetInstance()->FindResourceByID(key, scope)))->GetFont()
 
 }
 #endif

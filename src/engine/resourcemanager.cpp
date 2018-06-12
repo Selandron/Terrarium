@@ -176,6 +176,14 @@ tr::Resource * tr::ResourceManager::LoadResource(tinyxml2::XMLElement * element,
 			return m;
 			break;
 
+		case RESOURCE_TYPE::RESOURCE_FONT:
+			ResourceFont * f;
+			f = new ResourceFont(key, file);
+			if(f)
+				f->Load();
+			return f;
+			break;
+
 		default:
 			return NULL;
 	}

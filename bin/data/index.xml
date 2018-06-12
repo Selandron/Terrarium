@@ -10,4 +10,7 @@
 		<file type="3" key="patakas-world">Patakas World.wav</file>
 		<file type="4" key="power-bots-loop">Power Bots Loop.wav</file>
 	</audios>
+	<fonts>
+		<file type="6" key="arial">arial.ttf</file>
+	</fonts>
 </scope>

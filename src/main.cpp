@@ -18,6 +18,10 @@ int main()
 
     music->play();
 
+    sf::Text text;
+    text.setFont(*_GET_FONT("arial"));
+    text.setString("Ceci est un texte");
+
     while (window.isOpen()) 
     {
         sf::Event event;
@@ -29,6 +33,7 @@ int main()
 
         window.clear();
         window.draw(sprite);
+        window.draw(text);
         window.display();
     }
 
