@@ -184,6 +184,14 @@ tr::Resource * tr::ResourceManager::LoadResource(tinyxml2::XMLElement * element,
 			return f;
 			break;
 
+		case RESOURCE_TYPE::RESOURCE_TEXT:
+			ResourceText * e;
+			e = new ResourceText(key, file);
+			if(e)
+				e->Load();
+			return e;
+			break;
+
 		default:
 			return NULL;
 	}
