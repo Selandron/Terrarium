@@ -14,10 +14,9 @@ int main()
     sf::Sprite sprite;
     sprite.setTexture(*_GET_TEXTURE("wood_tileset"));
 
-    sf::Sound sound;
-    sound.setBuffer(*_GET_AUDIO("patakas-world"));
+    sf::Music * music = _GET_MUSIC("power-bots-loop");
 
-    sound.play();
+    music->play();
 
     while (window.isOpen()) 
     {

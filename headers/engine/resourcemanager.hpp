@@ -14,6 +14,7 @@
 #include "resource.hpp"
 #include "resourcetexture.hpp"
 #include "resourcesoundbuffer.hpp"
+#include "resourcemusic.hpp"
 #include "singleton.hpp"
 #include <map>
 #include <string>
@@ -53,8 +54,11 @@ class ResourceManager : public tr::Singleton<ResourceManager>
 #define _GET_TEXTURE(key) ((tr::ResourceTexture *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetTexture()
 #define _GET_TEXTURE_SCOPE(key, scope) ((tr::ResourceTexture *)(tr::ResourceManager::GetInstance()->FindResourceByID(key, scope)))->GetTexture()
 
-#define _GET_AUDIO(key) ((tr::ResourceAudio *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetSoundBuffer()
-#define _GET_AUDIO_SCOPE(key, scope) ((tr::ResourceAudio *)(tr::ResourceManager::GetInstance()->FindResourceByID(key, scope)))->GetSoundBuffer()
+#define _GET_SOUNDBUFFER(key) ((tr::ResourceSoundBuffer *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetSoundBuffer()
+#define _GET_SOUNDBUFFER_SCOPE(key, scope) ((tr::ResourceSoundBuffer *)(tr::ResourceManager::GetInstance()->FindResourceByID(key, scope)))->GetSoundBuffer()
+
+#define _GET_MUSIC(key) ((tr::ResourceMusic *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetMusic()
+#define _GET_MUSIC_SCOPE(key, scope) ((tr::ResourceMusic *)(tr::ResourceManager::GetInstance()->FindResourceByID(key, scope)))->GetMusic()
 
 }
 #endif

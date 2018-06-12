@@ -168,6 +168,14 @@ tr::Resource * tr::ResourceManager::LoadResource(tinyxml2::XMLElement * element,
 			return a;
 			break;
 
+		case RESOURCE_TYPE::RESOURCE_MUSIC:
+			ResourceMusic * m;
+			m = new ResourceMusic(key, file);
+			if(m)
+				m->Load();
+			return m;
+			break;
+
 		default:
 			return NULL;
 	}
