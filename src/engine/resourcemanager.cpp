@@ -160,6 +160,14 @@ tr::Resource * tr::ResourceManager::LoadResource(tinyxml2::XMLElement * element,
 			return t;
 			break;
 
+		case RESOURCE_TYPE::RESOURCE_SOUNDBUFFER:
+			ResourceSoundBuffer * a;
+			a = new ResourceSoundBuffer(key, file);
+			if(a)
+				a->Load();
+			return a;
+			break;
+
 		default:
 			return NULL;
 	}

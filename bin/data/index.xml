@@ -7,20 +7,7 @@
 		<file type="1" key="wood_tileset">wood_tileset.png</file>
 	</graphics>
 	<audios>
-		<test>
-			<file type="1" key="image_test1">image_test1.jpg</file>
-			<file type="1" key="image_test2">image_test2.jpg</file>
-		</test>
-			<file type="1" key="chaud">chaud.jpeg</file>
-	</audios>
-</scope>
-
-<scope name="second_scope">
-	<audios>
-		<test>
-			<file type="1" key="image_test1">image_test1.jpg</file>
-			<file type="1" key="image_test2">image_test2.jpg</file>
-		</test>
-			<file type="1" key="chaud">chaud.jpeg</file>
+		<file type="3" key="patakas-world">Patakas World.wav</file>
+		<file type="3" key="power-bots-loop">Power Bots Loop.wav</file>
 	</audios>
 </scope>

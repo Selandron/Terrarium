@@ -18,9 +18,10 @@ typedef enum
     RESOURCE_NULL = 0,
     RESOURCE_GRAPHIC = 1,
     RESOURCE_MOVIE = 2,
-    RESOURCE_AUDIO = 3,
-    RESOURCE_TEXT = 4,
-    RESOURCE_FONT = 5,
+    RESOURCE_SOUNDBUFFER = 3,
+    RESOURCE_MUSIC = 4,
+    RESOURCE_TEXT = 5,
+    RESOURCE_FONT = 6,
 }RESOURCE_TYPE; //Define every type of resource possible
 
 class Resource

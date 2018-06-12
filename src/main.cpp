@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "resourcemanager.hpp"
 
 int main()
@@ -9,12 +10,14 @@ int main()
     tr::ResourceManager * resMan = tr::ResourceManager::GetInstance();
     resMan->LoadFromFileXML("index.xml");
     resMan->PrintManager();
-    resMan->ClearScope("main_scope");
-    resMan->LoadFromFileXML("index.xml", "second_scope");
-    resMan->PrintManager();
 
-    sf::CircleShape shape(100.f);
-    shape.setTexture(_GET_TEXTURE("chaud"));
+    sf::Sprite sprite;
+    sprite.setTexture(*_GET_TEXTURE("wood_tileset"));
+
+    sf::Sound sound;
+    sound.setBuffer(*_GET_AUDIO("patakas-world"));
+
+    sound.play();
 
     while (window.isOpen()) 
     {
@@ -26,7 +29,7 @@ int main()
         }
 
         window.clear();
-        window.draw(shape);
+        window.draw(sprite);
         window.display();
     }
 
