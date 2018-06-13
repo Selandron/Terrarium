@@ -7,10 +7,13 @@
 		<file type="1" key="wood_tileset">wood_tileset.png</file>
 	</graphics>
 	<audios>
-		<file type="3" key="patakas-world">Patakas World.wav</file>
-		<file type="4" key="power-bots-loop">Power Bots Loop.wav</file>
+		<!--<file type="3" key="patakas-world">Patakas World.wav</file>
+		<file type="4" key="power-bots-loop">Power Bots Loop.wav</file>-->
 	</audios>
 	<fonts>
 		<file type="6" key="arial">arial.ttf</file>
 	</fonts>
+	<texts>
+		<file type="5" key="text1">text1.xml</file>
+	</texts>
 </scope>

@@ -7,20 +7,21 @@ int main()
     sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
     window.setFramerateLimit(144);
 
-    tr::ResourceManager * resMan = tr::ResourceManager::GetInstance();
+    tr::ResourceManager * resMan = tr::ResourceManager::GetInstance();    
     resMan->LoadFromFileXML("index.xml");
     resMan->PrintManager();
 
     sf::Sprite sprite;
     sprite.setTexture(*_GET_TEXTURE("wood_tileset"));
 
-    sf::Music * music = _GET_MUSIC("power-bots-loop");
+    //sf::Music * music = _GET_MUSIC("power-bots-loop");
 
-    music->play();
+    //music->play();
 
     sf::Text text;
     text.setFont(*_GET_FONT("arial"));
-    text.setString("Ceci est un texte");
+    text.setString(*_GET_TEXT("text1", "second-key"));
+
 
     while (window.isOpen()) 
     {

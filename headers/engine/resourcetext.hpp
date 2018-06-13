@@ -8,10 +8,12 @@
 */
 
 #include "resource.hpp"
+#include "tinyxml2.hpp"
 #include <iostream>
 #include <string>
+#include <map>
 
-namespace tr 
+namespace tr
 {
 
 class ResourceText : public Resource
@@ -24,9 +26,9 @@ class ResourceText : public Resource
 		void Load();
         void Unload();
 
-		std::string * GetString() {return m_string;}
+		std::string * GetText(std::string key);
 	private:
-		std::string * m_string;
+		std::map<std::string, std::string *> * m_resources;
 };
 
 }

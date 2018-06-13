@@ -65,8 +65,8 @@ class ResourceManager : public tr::Singleton<ResourceManager>
 #define _GET_FONT(key) ((tr::ResourceFont *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetFont()
 #define _GET_FONT_SCOPE(key, scope) ((tr::ResourceFont *)(tr::ResourceManager::GetInstance()->FindResourceByID(key, scope)))->GetFont()
 
-#define _GET_TEXT(key) ((tr::ResourceText *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetText()
-#define _GET_TEXT_SCOPE(key, scope) ((tr::ResourceText *)(tr::ResourceManager::GetInstance()->FindResourceByID(key, scope)))->GetText()
+#define _GET_TEXT(key, key_text) ((tr::ResourceText *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetText(key_text)
+#define _GET_TEXT_SCOPE(key, scope, key_text) ((tr::ResourceText *)(tr::ResourceManager::GetInstance()->FindResourceByID(key, scope)))->GetText(key_text)
 
 }
 #endif
