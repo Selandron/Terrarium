@@ -11,7 +11,6 @@ tr::ResourceSoundBuffer::ResourceSoundBuffer(std::string id, std::string filenam
 : tr::Resource(id, filename)
 {	
 	m_type = RESOURCE_SOUNDBUFFER;
-	Load();	
 }
 
 tr::ResourceSoundBuffer::~ResourceSoundBuffer()

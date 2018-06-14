@@ -11,7 +11,6 @@ tr::ResourceTexture::ResourceTexture(std::string id, std::string filename)
 : tr::Resource(id, filename)
 {	
 	m_type = RESOURCE_GRAPHIC;
-	Load();	
 }
 
 tr::ResourceTexture::~ResourceTexture()

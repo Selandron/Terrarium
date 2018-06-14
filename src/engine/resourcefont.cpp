@@ -11,7 +11,6 @@ tr::ResourceFont::ResourceFont(std::string id, std::string filename)
 : tr::Resource(id, filename)
 {	
 	m_type = RESOURCE_FONT;
-	Load();	
 }
 
 tr::ResourceFont::~ResourceFont()

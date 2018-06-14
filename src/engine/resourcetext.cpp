@@ -11,7 +11,6 @@ tr::ResourceText::ResourceText(std::string id, std::string filename)
 : tr::Resource(id, filename)
 {	
 	m_type = RESOURCE_TEXT;
-	Load();	
 }
 
 tr::ResourceText::~ResourceText()
