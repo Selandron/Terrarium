@@ -15,8 +15,7 @@ tr::ResourceMusic::ResourceMusic(std::string id, std::string filename)
 
 tr::ResourceMusic::~ResourceMusic()
 {
-	if (m_music)
-		delete m_music;
+	Unload();
 }
 
 void tr::ResourceMusic::Load()
@@ -30,7 +29,7 @@ void tr::ResourceMusic::Load()
 
 void tr::ResourceMusic::Unload()
 {
-	if (m_music)
+	if (m_music != NULL)
 		delete m_music;
 	m_loaded = false;
 }

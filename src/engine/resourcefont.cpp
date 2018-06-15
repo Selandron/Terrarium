@@ -15,8 +15,7 @@ tr::ResourceFont::ResourceFont(std::string id, std::string filename)
 
 tr::ResourceFont::~ResourceFont()
 {
-	if (m_font)
-		delete m_font;
+	Unload();
 }
 
 void tr::ResourceFont::Load()

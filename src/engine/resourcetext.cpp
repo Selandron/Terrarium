@@ -15,13 +15,7 @@ tr::ResourceText::ResourceText(std::string id, std::string filename)
 
 tr::ResourceText::~ResourceText()
 {
-	if (m_resources)
-	{
-		for(auto& it: *m_resources)
-			delete it.second;
-		m_resources->clear();
-		delete m_resources;
-	}
+	Unload();
 }
 
 void tr::ResourceText::Load()

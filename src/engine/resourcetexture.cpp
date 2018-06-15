@@ -15,8 +15,7 @@ tr::ResourceTexture::ResourceTexture(std::string id, std::string filename)
 
 tr::ResourceTexture::~ResourceTexture()
 {
-	if (m_texture)
-		delete m_texture;
+	Unload();
 }
 
 void tr::ResourceTexture::Load()
@@ -30,7 +29,7 @@ void tr::ResourceTexture::Load()
 
 void tr::ResourceTexture::Unload()
 {
-	if (m_texture)
+	if (m_texture != NULL)
 		delete m_texture;
 	m_loaded = false;
 }

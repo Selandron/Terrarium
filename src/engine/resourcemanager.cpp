@@ -16,7 +16,6 @@ tr::Resource * tr::ResourceManager::FindResourceByID(const std::string & ID, con
 	std::map<std::string, tr::Resource *>::iterator sub = it->second->find(ID);
 	if (sub == it->second->end())
 		throw tr::ResourceNotFoundException(ID.c_str());
-
 	return sub->second; 
 }
 
@@ -158,7 +157,7 @@ tr::Resource * tr::ResourceManager::LoadResource(const tinyxml2::XMLElement * el
 
 	switch(type)
 	{
-		case RESOURCE_TYPE::RESOURCE_GRAPHIC:
+		case RESOURCE_TYPE::RESOURCE_GRAPHIC: 
 			ResourceTexture * t;
 			t = new ResourceTexture(key, file);
 			if(t) 
@@ -249,10 +248,7 @@ void tr::ResourceManager::ClearScope(const std::string & scope)
 	for (std::map<std::string, tr::Resource *>::iterator sub = resourcesMap->begin(); sub != resourcesMap->end(); ++sub)
 	{
 		if (sub->second)
-		{
-			sub->second->Unload();
 			delete sub->second;
-		}
 		this->m_resourceCount--;
 	}
 	resourcesMap->clear();
@@ -263,11 +259,39 @@ void tr::ResourceManager::ClearScope(const std::string & scope)
 
 void tr::ResourceManager::PrintManager()
 {
+	if (this->m_resources.size() == 0)
+		std::cout << "No resources" << std::endl;
 	for (std::map<std::string,std::map<std::string, tr::Resource *> * >::iterator it = this->m_resources.begin(); it != this->m_resources.end(); it++)
 	{
 		std::cout << "Scope : " << it->first << std::endl;
 		std::map<std::string, tr::Resource *> * resourcesMap = it->second;
 		for (std::map<std::string, tr::Resource *>::iterator sub = resourcesMap->begin(); sub != resourcesMap->end(); ++sub)
-			std::cout << "-- Key : " << sub->first << " -- Target : " << (int)sub->second << " -- Type : " << sub->second->GetResourceType() << std::endl;  
+		{
+			std::cout << "-- Key : " << sub->first << " -- Target : " << (int)sub->second << " -- Type : ";
+			switch (sub->second->GetResourceType())
+			{
+				case RESOURCE_TYPE::RESOURCE_GRAPHIC:
+					std::cout << "GRAPHIC" << std::endl;
+					break;
+				case RESOURCE_TYPE::RESOURCE_SOUNDBUFFER:
+					std::cout << "SOUNDBUFFER" << std::endl;
+					break;
+				case RESOURCE_TYPE::RESOURCE_MUSIC:
+					std::cout << "MUSIC" << std::endl;
+					break;
+				case RESOURCE_TYPE::RESOURCE_FONT:
+					std::cout << "FONT" << std::endl;
+					break;
+				case RESOURCE_TYPE::RESOURCE_TEXT:
+					std::cout << "TEXT" << std::endl;
+					break;
+				case RESOURCE_TYPE::RESOURCE_MOVIE:
+					std::cout << "MOVIE" << std::endl;
+					break;
+				default:
+					std::cout << "NULL" << std::endl;
+					break;
+			}
+		}
 	}
 }

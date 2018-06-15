@@ -15,8 +15,7 @@ tr::ResourceSoundBuffer::ResourceSoundBuffer(std::string id, std::string filenam
 
 tr::ResourceSoundBuffer::~ResourceSoundBuffer()
 {
-	if (m_soundBuffer)
-		delete m_soundBuffer;
+	Unload();
 }
 
 void tr::ResourceSoundBuffer::Load()
