@@ -141,78 +141,41 @@ tr::Resource * tr::ResourceManager::LoadResource(const tinyxml2::XMLElement * el
 	std::string file = element->GetText();
 	file = path  + file;
 	RESOURCE_TYPE type = (RESOURCE_TYPE)element->IntAttribute("type");
+	Resource * r;
 
 	switch(type)
 	{
 		case RESOURCE_TYPE::RESOURCE_GRAPHIC: 
-			ResourceTexture * t;
-			t = new ResourceTexture(key, file);
-			if(t) 
-			{
-				t->Load();
-				if(!t->IsLoaded())
-					throw tr::ResourceNotLoadException(file.c_str());
-			}
-			else
-				throw tr::ResourceNotLoadException(file.c_str());
-			return t;
-
+			r = new ResourceTexture(key, file);
+			break;
 		case RESOURCE_TYPE::RESOURCE_SOUNDBUFFER:
-			ResourceSoundBuffer * a;
-			a = new ResourceSoundBuffer(key, file);
-			if(a)
-			{
-				a->Load();
-				if(!a->IsLoaded())
-					throw tr::ResourceNotLoadException(file.c_str());
-			}
-			else
-				throw tr::ResourceNotLoadException(file.c_str());
-			return a;
-
+			r = new ResourceSoundBuffer(key, file);
+			break;
 		case RESOURCE_TYPE::RESOURCE_MUSIC:
-			ResourceMusic * m;
-			m = new ResourceMusic(key, file);
-			if(m)
-			{
-				m->Load();
-				if(!m->IsLoaded())
-					throw tr::ResourceNotLoadException(file.c_str());
-			}
-			else
-				throw tr::ResourceNotLoadException(file.c_str());
-			return m;
-
+			r = new ResourceMusic(key, file);
+			break;
 		case RESOURCE_TYPE::RESOURCE_FONT:
-			ResourceFont * f;
-			f = new ResourceFont(key, file);
-			if(f)
-			{
-				f->Load();
-				if(!f->IsLoaded())
-					throw tr::ResourceNotLoadException(file.c_str());
-			}
-			else
-				throw tr::ResourceNotLoadException(file.c_str());
-			return f;
-
+			r = new ResourceFont(key, file);
+			break;
 		case RESOURCE_TYPE::RESOURCE_TEXT:
-			ResourceText * e;
-			e = new ResourceText(key, file);
-			if(e)
-			{
-				e->Load();
-				if(!e->IsLoaded())
-					throw tr::ResourceNotLoadException(file.c_str());
-			}
-			else
-				throw tr::ResourceNotLoadException(file.c_str());
-			return e;
-
+			r = new ResourceText(key, file);
+			break;
 		default:
 			throw tr::ResourceNotLoadException(file.c_str());
 	}
-	throw tr::ResourceNotLoadException(file.c_str());
+
+	if (r)
+	{
+		r->Load();
+		if (!r->IsLoaded())
+		{
+			delete r;
+			throw tr::ResourceNotLoadException(file.c_str());
+		}
+	}
+	else
+		throw tr::ResourceNotLoadException(file.c_str());
+	return r;
 }
 
 void tr::ResourceManager::Clear()

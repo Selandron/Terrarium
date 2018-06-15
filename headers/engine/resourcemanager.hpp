@@ -47,11 +47,11 @@ class ResourceManager : public tr::Singleton<ResourceManager>
 	    std::map<std::string, std::map<std::string, Resource *> * > m_resources; //Map of form <scope ID, Resource map>
 
 	private:
-		ResourceManager() : m_resourceCount(0) {};						//Private Constructor (only called once in Singleton)
-		~ResourceManager() {};											//Private Destructor (only called once)
+		ResourceManager() : m_resourceCount(0) {};																	//Private Constructor (only called once in Singleton)
+		~ResourceManager() {};																						//Private Destructor (only called once)
 
 		void ParseXMLTree(tinyxml2::XMLNode * root, std::string path, std::map<std::string, Resource *> * dup);		//Recursive function to parse XML tree
-		tr::Resource * LoadResource(const tinyxml2::XMLElement * element, const std::string & path); //Function to load resource
+		tr::Resource * LoadResource(const tinyxml2::XMLElement * element, const std::string & path); 				//Function to load resource
 };
 
 #define _GET_TEXTURE(key) ((tr::ResourceTexture *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetTexture()
