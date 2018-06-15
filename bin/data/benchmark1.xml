@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scope name="benchmark1">
+	<graphics>
+		<tilesets>
+			<file type="1" key="mud_block_tileset">mud_block_tileset.png</file>
+		</tilesets>
+		<file type="1" key="wood_tileset">wood_tileset.png</file>
+	</graphics>
+	<audios>
+		<musics>
+			<file type="3" key="patakas-world">Patakas World.wav</file>
+			<file type="4" key="power-bots-loop">Power Bots Loop.wav</file>
+		</musics>
+		<sounds>
+		</sounds>
+	</audios>
+	<fonts>
+		<file type="6" key="arial">arial.ttf</file>
+	</fonts>
+	<texts>
+		<file type="5" key="text1">text1.xml</file>
+	</texts>
+</scope>
+
+<scope name="benchmark2">
+	<graphics>
+		<tilesets>
+			<file type="1" key="mud_block_tileset">mud_block_tileset.png</file>
+		</tilesets>
+		<file type="1" key="wood_tileset">wood_tileset.png</file>
+	</graphics>
+	<audios>
+		<musics>
+			<file type="3" key="patakas-world">Patakas World.wav</file>
+			<file type="4" key="power-bots-loop">Power Bots Loop.wav</file>
+		</musics>
+		<sounds>
+		</sounds>
+	</audios>
+	<fonts>
+		<file type="6" key="arial">arial.ttf</file>
+	</fonts>
+	<texts>
+		<file type="5" key="text1">text1.xml</file>
+	</texts>
+</scope>
+
+<scope name="benchmark3">
+	<graphics>
+		<tilesets>
+			<file type="1" key="mud_block_tileset">mud_block_tileset.png</file>
+		</tilesets>
+		<file type="1" key="wood_tileset">wood_tileset.png</file>
+	</graphics>
+	<audios>
+		<musics>
+			<file type="3" key="patakas-world">Patakas World.wav</file>
+			<file type="4" key="power-bots-loop">Power Bots Loop.wav</file>
+		</musics>
+		<sounds>
+			<file type="3" key="erroraudio">error audio.wav</file>
+		</sounds>
+	</audios>
+	<fonts>
+		<file type="6" key="arial">arial.ttf</file>
+		<file type="7" key="errorfont">errorfont.ttf</file>
+	</fonts>
+	<texts>
+		<file type="5" key="text1">text1.xml</file>
+	</texts>
+</scope>
+
+<scope name="benchmark4">
+</scope>
