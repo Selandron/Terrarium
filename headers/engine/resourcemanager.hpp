@@ -33,12 +33,12 @@ class ResourceManager : public tr::Singleton<ResourceManager>
 	friend class Singleton<ResourceManager>;	//Set Singleton system
 
 	public:
-		Resource * FindResourceByID(std::string ID);								//Get the resource wanted
-		Resource * FindResourceByID(std::string ID, std::string scope);				//Get the resource wanted in the scope targeted
-		void ClearScope(std::string scopename);										//Empty the resources for a define scope
+		Resource * FindResourceByID(const std::string & ID);								//Get the resource wanted
+		Resource * FindResourceByID(const std::string & ID, const std::string & scope);			//Get the resource wanted in the scope targeted
+		void ClearScope(const std::string & scopename);									//Empty the resources for a define scope
 		void Clear();																//Empty ALL the resources (careful with the use)
-		bool LoadFromFileXML(std::string filename);									//Load an XML file (in data folder) to parse resources (first scope)
-		bool LoadFromFileXML(std::string filename, std::string scopename);			//Load an XML file (in data folder) with a scope wanted to parse resources
+		bool LoadFromFileXML(const std::string & filename);								//Load an XML file (in data folder) to parse resources (first scope)
+		bool LoadFromFileXML(const std::string & filename, const std::string & scopename);		//Load an XML file (in data folder) with a scope wanted to parse resources
 		void PrintManager();
 		UINT GetResourceCount() const { return m_resourceCount; }		
 	protected:
@@ -50,7 +50,7 @@ class ResourceManager : public tr::Singleton<ResourceManager>
 		~ResourceManager() {};											//Private Destructor (only called once)
 
 		bool ParseXMLTree(tinyxml2::XMLNode * root, std::string path, std::map<std::string, Resource *> * dup);		//Recursive function to parse XML tree
-		tr::Resource * LoadResource(tinyxml2::XMLElement * element, std::string path); //Function to load resource
+		tr::Resource * LoadResource(const tinyxml2::XMLElement * element, const std::string & path); //Function to load resource
 };
 
 #define _GET_TEXTURE(key) ((tr::ResourceTexture *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetTexture()

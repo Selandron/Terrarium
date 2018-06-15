@@ -1,6 +1,6 @@
 #include "resourcemanager.hpp"
 
-tr::Resource * tr::ResourceManager::FindResourceByID(std::string ID)
+tr::Resource * tr::ResourceManager::FindResourceByID(const std::string & ID)
 {
 	for (std::map<std::string,std::map<std::string, tr::Resource *> * >::iterator it = this->m_resources.begin(); it != this->m_resources.end(); ++it)
 		if (FindResourceByID(ID, it->first))
@@ -8,7 +8,7 @@ tr::Resource * tr::ResourceManager::FindResourceByID(std::string ID)
 	return NULL;
 }
 
-tr::Resource * tr::ResourceManager::FindResourceByID(std::string ID, std::string scope)
+tr::Resource * tr::ResourceManager::FindResourceByID(const std::string & ID, const std::string & scope)
 {
 	std::map<std::string,std::map<std::string, tr::Resource *> * >::iterator it = this->m_resources.find(scope);
 	if (it == this->m_resources.end())
@@ -20,7 +20,7 @@ tr::Resource * tr::ResourceManager::FindResourceByID(std::string ID, std::string
 	return sub->second; 
 }
 
-bool tr::ResourceManager::LoadFromFileXML(std::string filename)
+bool tr::ResourceManager::LoadFromFileXML(const std::string & filename)
 {
 	//Opening xml document
 	tinyxml2::XMLDocument doc;
@@ -65,7 +65,7 @@ bool tr::ResourceManager::LoadFromFileXML(std::string filename)
 	return true;
 }
 
-bool tr::ResourceManager::LoadFromFileXML(std::string filename, std::string scopename)
+bool tr::ResourceManager::LoadFromFileXML(const std::string & filename, const std::string & scopename)
 {
 	//Opening xml document
 	tinyxml2::XMLDocument doc;
@@ -143,7 +143,7 @@ bool tr::ResourceManager::ParseXMLTree(tinyxml2::XMLNode * root, std::string pat
 	return true;
 }
 
-tr::Resource * tr::ResourceManager::LoadResource(tinyxml2::XMLElement * element, std::string path)
+tr::Resource * tr::ResourceManager::LoadResource(const tinyxml2::XMLElement * element, const std::string & path)
 {
 	std::string key = element->Attribute("key");
 	std::string file = element->GetText();
@@ -207,7 +207,7 @@ void tr::ResourceManager::Clear()
 	this->m_resourceCount = 0;
 }
 
-void tr::ResourceManager::ClearScope(std::string scope)
+void tr::ResourceManager::ClearScope(const std::string & scope)
 {
 	std::map<std::string,std::map<std::string, tr::Resource *> * >::iterator it = this->m_resources.find(scope); 	//Iterator on the map
 
