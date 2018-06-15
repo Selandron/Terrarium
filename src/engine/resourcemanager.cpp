@@ -32,25 +32,12 @@ void tr::ResourceManager::LoadFromFileXML(const std::string & filename)
 		return;
 	}
 
-	//PARSING
-	std::string path = "./data/";	//Root path
-
-	tinyxml2::XMLElement * scopeEl = doc.FirstChildElement("scope");		//ScopeElement need to exist and have a name
+	tinyxml2::XMLElement * scopeEl = doc.FirstChildElement("scope");
 	if (scopeEl && scopeEl->Attribute("name") != NULL && !scopeEl->NoChildren())		
 	{
 		std::string scope = scopeEl->Attribute("name");
 
-		//Remove existing scope if exist
-		ClearScope(scope);
-
-		//Create scope and map
-		std::map<std::string, Resource *> * dup = new std::map<std::string, Resource *>();
-
-		ParseXMLTree(scopeEl, path, dup); //Parse the XML Tree while loading resources
-		if (dup->size() != 0) // If some resources still have been loaded
-			this->m_resources.insert(std::pair<std::string, std::map<std::string, Resource *> * >(scope, dup)); //Insert the resource scope
-		else
-			delete dup;
+		LoadFromFileXML(filename, scope);	//Call for the generic function
 	}
 	else if (!scopeEl)
 		std::cerr << "Error : " << filename << " There is no scope in this file." << std::endl;
@@ -267,7 +254,7 @@ void tr::ResourceManager::PrintManager()
 		std::map<std::string, tr::Resource *> * resourcesMap = it->second;
 		for (std::map<std::string, tr::Resource *>::iterator sub = resourcesMap->begin(); sub != resourcesMap->end(); ++sub)
 		{
-			std::cout << "-- Key : " << sub->first << " -- Target : " << (int)sub->second << " -- Type : ";
+			std::cout << "\t-- Key : " << sub->first << " -- Target : " << (int)sub->second << " -- Type : ";
 			switch (sub->second->GetResourceType())
 			{
 				case RESOURCE_TYPE::RESOURCE_GRAPHIC:
