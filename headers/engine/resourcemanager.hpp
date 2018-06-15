@@ -18,6 +18,7 @@
 #include "resourcefont.hpp"
 #include "resourcetext.hpp"
 #include "singleton.hpp"
+#include "exceptions.hpp"
 #include <map>
 #include <string>
 #include <fstream>
@@ -34,11 +35,11 @@ class ResourceManager : public tr::Singleton<ResourceManager>
 
 	public:
 		Resource * FindResourceByID(const std::string & ID);								//Get the resource wanted
-		Resource * FindResourceByID(const std::string & ID, const std::string & scope);			//Get the resource wanted in the scope targeted
-		void ClearScope(const std::string & scopename);									//Empty the resources for a define scope
-		void Clear();																//Empty ALL the resources (careful with the use)
-		bool LoadFromFileXML(const std::string & filename);								//Load an XML file (in data folder) to parse resources (first scope)
-		bool LoadFromFileXML(const std::string & filename, const std::string & scopename);		//Load an XML file (in data folder) with a scope wanted to parse resources
+		Resource * FindResourceByID(const std::string & ID, const std::string & scope);		//Get the resource wanted in the scope targeted
+		void ClearScope(const std::string & scopename);										//Empty the resources for a define scope
+		void Clear();																		//Empty ALL the resources (careful with the use)
+		void LoadFromFileXML(const std::string & filename);									//Load an XML file (in data folder) to parse resources (first scope)
+		void LoadFromFileXML(const std::string & filename, const std::string & scopename);	//Load an XML file (in data folder) with a scope wanted to parse resources
 		void PrintManager();
 		UINT GetResourceCount() const { return m_resourceCount; }		
 	protected:
@@ -49,7 +50,7 @@ class ResourceManager : public tr::Singleton<ResourceManager>
 		ResourceManager() : m_resourceCount(0) {};						//Private Constructor (only called once in Singleton)
 		~ResourceManager() {};											//Private Destructor (only called once)
 
-		bool ParseXMLTree(tinyxml2::XMLNode * root, std::string path, std::map<std::string, Resource *> * dup);		//Recursive function to parse XML tree
+		void ParseXMLTree(tinyxml2::XMLNode * root, std::string path, std::map<std::string, Resource *> * dup);		//Recursive function to parse XML tree
 		tr::Resource * LoadResource(const tinyxml2::XMLElement * element, const std::string & path); //Function to load resource
 };
 
