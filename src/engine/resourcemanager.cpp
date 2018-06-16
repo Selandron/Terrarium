@@ -217,7 +217,7 @@ void tr::ResourceManager::PrintManager()
 		std::map<std::string, tr::Resource *> * resourcesMap = it->second;
 		for (std::map<std::string, tr::Resource *>::iterator sub = resourcesMap->begin(); sub != resourcesMap->end(); ++sub)
 		{
-			std::cout << "\t-- Key : " << sub->first << " -- Target : " << (int)sub->second << " -- Type : ";
+			std::cout << "\t-- Key : " << sub->first << " -- Target : " << sub->second->GetFilename() << " -- Type : ";
 			switch (sub->second->GetResourceType())
 			{
 				case RESOURCE_TYPE::RESOURCE_GRAPHIC:

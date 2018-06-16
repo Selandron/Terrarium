@@ -7,8 +7,8 @@ ENGINE=resourcemanager.o resourcetexture.o resourcesoundbuffer.o resourcemusic.o
 EXEC=terrarium.exe
 HEADERS=-Iheaders\tinyxml2 -Iheaders\engine
 BIN=./bin/
-PATH_SFML=D:\Bibliotheque\SFML-2.4.2
-CFLAGS=-W -Wall -ansi -std=c++11 -pedantic -I$(PATH_SFML)\include $(HEADERS)
+PATH_SFML=D:\Bibliotheque\SFML-2.5.0
+CFLAGS=-W -Wall -ansi -std=c++11 -I$(PATH_SFML)\include $(HEADERS)
 LDFLAGS=-L$(PATH_SFML)\lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
 
 all: $(BIN)$(EXEC) 
