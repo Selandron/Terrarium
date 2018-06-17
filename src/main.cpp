@@ -6,17 +6,23 @@ void benchmarck()
 {
     tr::ResourceManager * resMan = tr::ResourceManager::GetInstance(); 
 
+    //std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+
     //STEP 1 -- LOAD BENCHMARK1 -- SHOULD WORK (result : scope benchmark1 loaded)
     std::cout << "STEP 1 -- LOAD BENCHMARK1 -- SHOULD WORK (result : scope benchmark1 loaded)" << std::endl;
     resMan->LoadFromFileXML("benchmark1.xml");
     resMan->PrintManager();
     std::cout << std::endl;
 
+    //std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+
     //STEP 2 -- UNLOAD BENCHMARK1 -- SHOULD WORK (result : no resources)
     std::cout << "STEP 2 -- UNLOAD BENCHMARK1 -- SHOULD WORK (result : no resources)" << std::endl;
     resMan->Clear();
     resMan->PrintManager();
     std::cout << std::endl;
+
+    //std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
     //STEP 3 -- LOAD BENCHMARK2 -- SHOULD WORK (result : scope benchmark2 loaded)
     std::cout << "STEP 3 -- LOAD BENCHMARK2 -- SHOULD WORK (result : scope benchmark2 loaded)" << std::endl;

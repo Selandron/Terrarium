@@ -14,32 +14,29 @@ tr::Resource * tr::ResourceManager::FindResourceByID(const std::string & ID, con
 	if (it == this->m_resources.end())
 		throw tr::ScopeNotFoundException(scope.c_str());
 	std::map<std::string, tr::Resource *>::iterator sub = it->second->find(ID);
-	if (sub == it->second->end())
-		throw tr::ResourceNotFoundException(ID.c_str());
-	return sub->second; 
+	return ((sub == it->second->end()) ? NULL : sub->second);
 }
 
 void tr::ResourceManager::LoadFromFileXML(const std::string & filename)
 {
-	//Opening xml document
+	//Opening XML document
 	tinyxml2::XMLDocument doc;
 	std::string root = "./data/";
 	root += filename;
 	doc.LoadFile(root.c_str());
-	if (doc.Error()) //Error while pre parsing document
+	if (doc.Error()) //Error while pre-parsing document
 	{	
 		std::cerr << doc.ErrorStr() << std::endl;
 		return;
 	}
 
-	tinyxml2::XMLElement * scopeEl = doc.FirstChildElement("scope");
+	tinyxml2::XMLElement * scopeEl = doc.FirstChildElement("scope"); //Get the first scope name
 	if (scopeEl && scopeEl->Attribute("name") != NULL && !scopeEl->NoChildren())		
 	{
 		std::string scope = scopeEl->Attribute("name");
-
 		LoadFromFileXML(filename, scope);	//Call for the generic function
 	}
-	else if (!scopeEl)
+	else if (!scopeEl)	//Handles errors
 		std::cerr << "Error : " << filename << " There is no scope in this file." << std::endl;
 	else if (scopeEl->NoChildren() && scopeEl->Attribute("name") != NULL)
 		std::cerr << "Error : In " << filename << " scope " << scopeEl->Attribute("name") << " has no resources indexed!" << std::endl;
@@ -49,12 +46,12 @@ void tr::ResourceManager::LoadFromFileXML(const std::string & filename)
 
 void tr::ResourceManager::LoadFromFileXML(const std::string & filename, const std::string & scopename)
 {
-	//Opening xml document
+	//Opening XML document
 	tinyxml2::XMLDocument doc;
 	std::string root = "./data/";
 	root += filename;
 	doc.LoadFile(root.c_str());
-	if (doc.Error()) //Error while pre parsing document
+	if (doc.Error()) //Error while pre-parsing document
 	{	
 		std::cerr << doc.ErrorStr() << std::endl;
 		return;
@@ -77,45 +74,36 @@ void tr::ResourceManager::LoadFromFileXML(const std::string & filename, const st
 	if (scopeSearch == NULL)
 		scopeEl = NULL;
 
-	if (scopeEl && !scopeEl->NoChildren())		
+	if (scopeEl && !scopeEl->NoChildren()) //If we have a good scope	
 	{
 		std::string scope = scopeEl->Attribute("name");
-
-		//Remove existing scope if exist
-		ClearScope(scope);
-		//Create scope and map
-		std::map<std::string, Resource *> * dup = new std::map<std::string, Resource *>();
-
-		ParseXMLTree(scopeEl, path, dup); //Parse the XML Tree while loading resources
-		if (dup->size() != 0) // If some resources still have been loaded
-			this->m_resources.insert(std::pair<std::string, std::map<std::string, Resource *> * >(scope, dup)); //Insert the resource scope
-		else
-			delete dup;
+		ClearScope(scope); //Remove existing scope if exist
+		ParseXMLTree(scopeEl, path); //Parse the XML Tree while creating Resources
+		LoadPendingResources(scope);  //Load the pending Resources stored
 	}
-	else if (!scopeEl)
-		std::cerr << "Error : " << filename << " - scopename " << scopename << " don't exist." << std::endl;
+	else if (!scopeEl)	//Handle errors
+		std::cerr << "Error : " << filename << " - scope name " << scopename << " don't exist." << std::endl;
 	else if (scopeEl->NoChildren())
 		std::cerr << "Error : In " << filename << " scope " << scopename << " has no resources indexed!" << std::endl;
 	else
-		std::cerr << "Error : " << filename << " - Unknow Error from " << scopename << "." << std::endl;
+		std::cerr << "Error : " << filename << " - Unknown Error from " << scopename << "." << std::endl;
 }
 
-void tr::ResourceManager::ParseXMLTree(tinyxml2::XMLNode * root, std::string path, std::map<std::string, Resource *> * dup)
+void tr::ResourceManager::ParseXMLTree(tinyxml2::XMLNode * root, std::string path)
 {
 	tinyxml2::XMLNode * childNode = root->FirstChildElement();
-	while (childNode)	//Parse all type of resources
+	while (childNode)	//While the root node have childs
 	{
 		if (strcmp(childNode->Value(), "file") == 0)	//If its a file
 		{
 			tinyxml2::XMLElement * element = childNode->ToElement();
-			if (element && element->Attribute("key") && element->Attribute("type") && element->GetText()) //Has enougth attributes
+			if (element && element->Attribute("key") && element->Attribute("type") && element->GetText()) //Has enough attributes
 			{									
 				std::string key = element->Attribute("key");
 				try
 				{
-					tr::Resource * t = LoadResource(element, path);	//Load of the Resource	
-					dup->insert(std::pair<std::string, tr::Resource *>(key, t));
-					this->m_resourceCount++;							
+					tr::Resource * t = CreateResource(element, path);	//Create of the Resource	
+					m_listOfPendingResources.push_back(t);	//Store the Resource for loading
 				}
 				catch (tr::ResourceNotLoadException & e)
 				{
@@ -128,22 +116,21 @@ void tr::ResourceManager::ParseXMLTree(tinyxml2::XMLNode * root, std::string pat
 			std::string newPath = path;
 			newPath += childNode->Value();
 			newPath += "/";
-			ParseXMLTree(childNode, newPath, dup); //Parse the XML Tree while loading resources
+			ParseXMLTree(childNode, newPath); //Parse the XML Tree while creating resources
 		}
-
 		childNode = childNode->NextSibling();
 	}
 }
 
-tr::Resource * tr::ResourceManager::LoadResource(const tinyxml2::XMLElement * element, const std::string & path)
+tr::Resource * tr::ResourceManager::CreateResource(const tinyxml2::XMLElement * element, const std::string & path)
 {
-	std::string key = element->Attribute("key");
+	std::string key = element->Attribute("key"); //Get all parameters needed
 	std::string file = element->GetText();
 	file = path  + file;
 	RESOURCE_TYPE type = (RESOURCE_TYPE)element->IntAttribute("type");
 	Resource * r;
 
-	switch(type)
+	switch(type) //Create the good type of resource
 	{
 		case RESOURCE_TYPE::RESOURCE_GRAPHIC: 
 			r = new ResourceTexture(key, file);
@@ -165,17 +152,69 @@ tr::Resource * tr::ResourceManager::LoadResource(const tinyxml2::XMLElement * el
 	}
 
 	if (r)
-	{
-		r->Load();
-		if (!r->IsLoaded())
-		{
-			delete r;
-			throw tr::ResourceNotLoadException(file.c_str());
-		}
-	}
+		return r;
 	else
 		throw tr::ResourceNotLoadException(file.c_str());
-	return r;
+}
+
+bool sortByType(tr::Resource *& r1, tr::Resource *& r2) { return ((int)r1->GetResourceType() < (int)r2->GetResourceType()); } //Function used to sorts Resources by their types
+
+void tr::ResourceManager::LoadPendingResources(std::string & scope)
+{ 
+	std::sort(m_listOfPendingResources.begin(), m_listOfPendingResources.end(), sortByType); //Sort the resources to load by their types
+	std::map<std::string, Resource *> * dup = new std::map<std::string, Resource *>();
+	for (unsigned int i = 0; i < m_listOfPendingResources.size(); ++i)	//Load each resources
+	{
+		try
+		{
+			Resource * r = m_listOfPendingResources[i];
+			if (r)
+			{
+				r->Load();
+				if (!r->IsLoaded())
+				{
+					delete r;
+					throw tr::ResourceNotLoadException(r->GetFilename().c_str());
+				}
+				dup->insert(std::pair<std::string, tr::Resource *>(r->GetResourceID(), r)); //Insert the resource
+				this->m_resourceCount++;
+				float progress = (float)(i) / (float)m_listOfPendingResources.size(); //Display progress
+			    int barWidth = 40;
+			    std::cout << "[";
+			    int pos = barWidth * progress;
+			    for (int i = 0; i < barWidth; ++i) {
+			        if (i < pos) std::cout << "=";
+			        else if (i == pos) std::cout << ">";
+			        else std::cout << " ";
+			    }
+			    std::cout << "] " << int(progress * 100.0) << " %\r";
+			    std::cout.flush();
+			}
+		}
+		catch (ResourceNotLoadException & e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+	}
+	m_listOfPendingResources.clear(); //Clear the list of pending resources
+
+	float progress = 1.0; //Display max bar progress
+	int barWidth = 40;
+	std::cout << "[";
+	int pos = barWidth * progress;
+	for (int i = 0; i < barWidth; ++i) {
+		if (i < pos) std::cout << "=";
+		else if (i == pos) std::cout << ">";
+		else std::cout << " ";
+	}
+	std::cout << "] " << int(progress * 100.0) << " %\r";
+	std::cout.flush();
+	std::cout << std::endl;
+
+	if (dup->size() != 0) // If some resources still have been loaded
+		this->m_resources.insert(std::pair<std::string, std::map<std::string, Resource *> * >(scope, dup)); //Insert the resource scope
+	else
+		delete dup;
 }
 
 void tr::ResourceManager::Clear()
@@ -203,8 +242,7 @@ void tr::ResourceManager::ClearScope(const std::string & scope)
 	}
 	resourcesMap->clear();
 	delete resourcesMap;
-	//Remove in first map the entry 
-	this->m_resources.erase(it);
+	this->m_resources.erase(it); //Remove in first map the entry 
 }
 
 void tr::ResourceManager::PrintManager()
@@ -215,10 +253,15 @@ void tr::ResourceManager::PrintManager()
 	{
 		std::cout << "Scope : " << it->first << std::endl;
 		std::map<std::string, tr::Resource *> * resourcesMap = it->second;
+		std::vector<tr::Resource * > listResources;
 		for (std::map<std::string, tr::Resource *>::iterator sub = resourcesMap->begin(); sub != resourcesMap->end(); ++sub)
+			listResources.push_back(sub->second);
+		std::sort(listResources.begin(), listResources.end(), sortByType);
+		for (std::vector<tr::Resource *>::iterator sub = listResources.begin(); sub != listResources.end(); sub++)
 		{
-			std::cout << "\t-- Key : " << sub->first << " -- Target : " << (int)sub->second << " -- Type : ";
-			switch (sub->second->GetResourceType())
+			Resource * r = *sub;
+			std::cout << "\t-- Key : " << r->GetResourceID() << " -- Target : " << r->GetFilename() << " -- Type : ";
+			switch (r->GetResourceType())
 			{
 				case RESOURCE_TYPE::RESOURCE_GRAPHIC:
 					std::cout << "GRAPHIC" << std::endl;

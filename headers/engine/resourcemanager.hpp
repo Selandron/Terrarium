@@ -24,6 +24,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 #include "tinyxml2.hpp"
 
 namespace tr
@@ -40,19 +41,23 @@ class ResourceManager : public tr::Singleton<ResourceManager>
 		void Clear();																		//Empty ALL the resources (careful with the use)
 		void LoadFromFileXML(const std::string & filename);									//Load an XML file (in data folder) to parse resources (first scope)
 		void LoadFromFileXML(const std::string & filename, const std::string & scopename);	//Load an XML file (in data folder) with a scope wanted to parse resources
-		void PrintManager();
-		UINT GetResourceCount() const { return m_resourceCount; }		
+		void PrintManager();																//Print all content from the manager
+		UINT GetResourceCount() const { return m_resourceCount; }							//Get the number of resources stored
 	protected:
-	    UINT m_resourceCount; //Total number of resources unloaded and loaded
-	    std::map<std::string, std::map<std::string, Resource *> * > m_resources; //Map of form <scope ID, Resource map>
+	    UINT m_resourceCount; 																//Total number of resources loaded
+	    std::map<std::string, std::map<std::string, Resource *> * > m_resources; 			//Map of form <scope ID, Resource map>
 
 	private:
 		ResourceManager() : m_resourceCount(0) {};																	//Private Constructor (only called once in Singleton)
 		~ResourceManager() {};																						//Private Destructor (only called once)
 
-		void ParseXMLTree(tinyxml2::XMLNode * root, std::string path, std::map<std::string, Resource *> * dup);		//Recursive function to parse XML tree
-		tr::Resource * LoadResource(const tinyxml2::XMLElement * element, const std::string & path); 				//Function to load resource
+		void ParseXMLTree(tinyxml2::XMLNode * root, std::string path);												//Recursive function to parse XML tree
+		tr::Resource * CreateResource(const tinyxml2::XMLElement * element, const std::string & path); 				//Function to create (but not load) resource
+		void LoadPendingResources(std::string & scope);																//Load the resources not alreadys loaded
+
+		std::vector<Resource *> m_listOfPendingResources;															//Resources creates but not stored
 };
+
 
 #define _GET_TEXTURE(key) ((tr::ResourceTexture *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetTexture()
 #define _GET_TEXTURE_SCOPE(key, scope) ((tr::ResourceTexture *)(tr::ResourceManager::GetInstance()->FindResourceByID(key, scope)))->GetTexture()
@@ -68,6 +73,6 @@ class ResourceManager : public tr::Singleton<ResourceManager>
 
 #define _GET_TEXT(key, key_text) ((tr::ResourceText *)(tr::ResourceManager::GetInstance()->FindResourceByID(key)))->GetText(key_text)
 #define _GET_TEXT_SCOPE(key, scope, key_text) ((tr::ResourceText *)(tr::ResourceManager::GetInstance()->FindResourceByID(key, scope)))->GetText(key_text)
-
 }
+
 #endif
