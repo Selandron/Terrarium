@@ -70,10 +70,40 @@ void benchmarck()
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(500, 500), "SFML works!");
     window.setFramerateLimit(144);
 
-    benchmarck();
+    //benchmarck();
+
+    tr::ResourceManager * resMan = tr::ResourceManager::GetInstance();
+    resMan->LoadFromFileXML("benchmark1.xml");
+
+    sf::Texture * texture;
+    sf::SoundBuffer * buffer;
+    sf::Sound sound;
+    sf::Music * music;
+    sf::Text text;
+    sf::Font * font;
+    sf::Sprite sprite;
+    try
+    {
+        texture = _GET_TEXTURE("mud_block_tileset");
+        buffer = _GET_SOUNDBUFFER("patakas-world");
+        music = _GET_MUSIC("power-bots-loop");
+        font = _GET_FONT("arial");
+        text.setFont(*font);
+        text.setString(*_GET_TEXT("text1", "first-key"));
+        sprite.setTexture(*texture);
+        sound.setBuffer(*buffer);
+        sound.play();
+        music->play();
+    }
+    catch (tr::ResourceNotFoundException & e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+
+
 
     while (window.isOpen()) 
     {
@@ -85,6 +115,8 @@ int main()
         }
 
         window.clear();
+        window.draw(sprite);
+        window.draw(text);
         window.display();
     }
     return 0;
