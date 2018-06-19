@@ -20,7 +20,7 @@ void benchmarck()
     std::cout << "STEP 2 -- UNLOAD BENCHMARK1 -- SHOULD WORK (result : no resources)" << std::endl;
     resMan->Clear();
     resMan->PrintManager();
-    std::cout << std::endl;
+    std::cout << std::endl; 
 
     //std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
@@ -65,6 +65,7 @@ void benchmarck()
     resMan->Clear();
     resMan->PrintManager();
     std::cout << std::endl;
+    resMan->Kill();
 
 }
 
