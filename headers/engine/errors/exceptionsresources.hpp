@@ -1,5 +1,5 @@
-#ifndef EXCEPTIONS_HPP
-#define EXCEPTIONS_HPP
+#ifndef EXCEPTIONSRESOURCES_HPP
+#define EXCEPTIONSRESOURCES_HPP
 
 #include <iostream> 
 #include <sstream> 

@@ -4,7 +4,6 @@
 /*
     Resource Manager. Handle every resource loaded.
     You have to passe by a (or more) xml file that indexes every resource.
-    Can be upgraded with a scope system, TODO
 
     Author : Etienne Andrieu
 */
@@ -18,7 +17,7 @@
 #include "resourcefont.hpp"
 #include "resourcetext.hpp"
 #include "singleton.hpp"
-#include "exceptions.hpp"
+#include "exceptionsresources.hpp"
 #include <map>
 #include <string>
 #include <fstream>
