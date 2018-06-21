@@ -9,6 +9,10 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <sstream>
+#include <string>
+#include <fstream>
+#include <iostream>
 
 namespace tr
 {
@@ -36,11 +40,18 @@ class GameManager
 		sf::RenderWindow * GetWindow() { return m_window; } 	//Get the reference on the window
 
 	private:
+		bool checkIni();
+
 		std::vector<GameState *> m_states;						//Stak of states
-
 		sf::RenderWindow * m_window;							//The window
-
 		bool m_running;											//Status of the window.
+
+		sf::VideoMode m_windowCaract;
+		bool m_fullscreen;
+		int m_antialiasingLevel;
+		int m_maxFramerate;
+		bool m_verticalSync;
+		std::string m_lang;
 };
 
 }
