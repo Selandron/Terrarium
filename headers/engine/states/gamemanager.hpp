@@ -1,6 +1,12 @@
 #ifndef GAMEMANAGER_HPP
 #define GAMEMANAGER_HPP
 
+/*
+ * 	Class representing a game manager. It's the class that handle the game entirerly and manage the states layer.
+ *	
+ *	Author : Etienne Andrieu
+ */
+
 #include <vector>
 #include <SFML/Graphics.hpp>
 
@@ -13,29 +19,28 @@ class GameManager
 {
 	public:
 
-		void Init();
-		void Cleanup();
+		void Init();											//Init and launch the window
+		void Cleanup();											//Clear pending states and shutdown window
 
-		void ChangeState(GameState * state);
-		void PushState(GameState * state);
-		void PopState();
+		void ChangeState(GameState * state);					//Change the current state (replace the last state of the stak)
+		void PushState(GameState * state);						//Push a state above the current one
+		void PopState();										//Pop the current state
 
-		void HandleEvents();
-		void Update();
-		void Draw();
+		void HandleEvents();									//Call the handle event function on the current state
+		void Update();											//Call the update function on the current state
+		void Draw();											//Call the draw function on the current state
 
-		bool Running() { return m_running; }
-		void Quit() { m_running = false; }
+		bool Running() { return m_running; }					//Know if the window is running
+		void Quit() { m_running = false; }						//Quit the infinty loop
 
-		sf::RenderWindow * GetWindow() { return m_window; }
+		sf::RenderWindow * GetWindow() { return m_window; } 	//Get the reference on the window
 
 	private:
-		//Stack of States
-		std::vector<GameState *> m_states;
+		std::vector<GameState *> m_states;						//Stak of states
 
-		sf::RenderWindow * m_window;
+		sf::RenderWindow * m_window;							//The window
 
-		bool m_running;
+		bool m_running;											//Status of the window.
 };
 
 }
