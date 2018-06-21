@@ -4,7 +4,11 @@ tr::GameStateLoading tr::GameStateLoading::m_state;
 
 void tr::GameStateLoading::Init()
 {
+	tr::ResourceManager * resMan = tr::ResourceManager::GetInstance();
+	resMan->LoadFromFileXML("index.xml", "loading_scope");
 
+	m_loadingThread = std::thread(&GameStateLoading::Loading, this);
+	m_loadingThread.detach();
 }
 
 void tr::GameStateLoading::Cleanup()
@@ -31,13 +35,6 @@ void tr::GameStateLoading::HandleEvents(tr::GameManager * game)
     {
         if (event.type == sf::Event::Closed)
             game->Quit();
-        if (event.type == sf::Event::KeyPressed)
-		{
-		    if (event.key.code == sf::Keyboard::A)
-		        game->PushState(GameStateMenu::Instance());
-			else if (event.key.code == sf::Keyboard::Escape)
-		        game->Quit();
-		}
     }
 }
 
@@ -51,5 +48,10 @@ void tr::GameStateLoading::Draw(tr::GameManager * game)
 {
 	sf::RenderWindow * window = game->GetWindow();
 	window->display();
-	std::cout << "Loading state" << std::endl;
+}
+
+void tr::GameStateLoading::Loading()
+{
+	tr::ResourceManager * resMan = tr::ResourceManager::GetInstance();
+	resMan->LoadFromFileXML("index.xml");
 }

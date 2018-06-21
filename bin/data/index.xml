@@ -11,3 +11,15 @@
 		<file type="5" key="text1">text1.xml</file>
 	</texts>
 </scope>
+
+<scope name="loading_scope">
+	<graphics>
+		<loading_screens>
+			<file type="1" key="loading_screen_1">screen1.png</file>
+		</loading_screens>
+	</graphics>
+	<texts>
+		<file type="5" key="loading_tips">loading_tips.xml</file>
+		<file type="5" key="loading_texts">loading_texts.xml</file>
+	</texts>
+</scope>

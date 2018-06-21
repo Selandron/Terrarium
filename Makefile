@@ -30,6 +30,9 @@ $(BIN)$(EXEC): $(MAIN) $(TINYXML2) $(MANAGER) $(STATES)
 %.o: src/engine/states/%.cpp
 	$(CC) -o $@ -c $< $(CFLAGS)
 
+%.o: src/states/%.cpp
+	$(CC) -o $@ -c $< $(CFLAGS)
+
 clean:
 	rm -rf *.o
 

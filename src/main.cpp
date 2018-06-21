@@ -73,20 +73,6 @@ void benchmarck()
 
 int main()
 {
-    /*sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    window.setFramerateLimit(144);
-
-    //benchmarck();
-
-    std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
-    for (std::size_t i = 0; i < modes.size(); ++i)
-    {
-        sf::VideoMode mode = modes[i];
-        std::cout << "Mode #" << i << ": "
-                  << mode.width << "x" << mode.height << " - "
-                  << mode.bitsPerPixel << " bpp" << std::endl;
-    }*/
-
     tr::GameManager gameManager;
     gameManager.Init();
 
