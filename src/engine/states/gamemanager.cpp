@@ -97,7 +97,7 @@ bool tr::GameManager::checkIni()
 		std::ofstream outfile("config.ini");
 		if (!outfile)
 			return false;
-		outfile << "fullscreen=false" << std::endl << "width=800" << std::endl << "height=600" << std::endl << "dpp=32" << std::endl << "antialiasing=0" << std::endl << "frameratemax=60" << std::endl << "verticalsync=false" << "lang=EN";
+		outfile << "fullscreen = false" << std::endl << "width = 800" << std::endl << "height = 600" << std::endl << "dpp = 32" << std::endl << "antialiasing = 0" << std::endl << "frameratemax = 60" << std::endl << "verticalsync = false" << std::endl << "lang = EN";
 		outfile.close();
 		return true;
 	}
@@ -107,7 +107,7 @@ bool tr::GameManager::checkIni()
 	std::getline(infile, line);
 	std::istringstream iss(line);
 	std::string variableBool;
-	if(!(iss >> variable >> equal >> variableBool) || variable.compare("fullscreen") != 0 || equal.compare("=") != 0 || (variableBool.compare("true") != 0 && variableBool.compare("false") != 0))
+	if(!(iss >> variable >> equal >> variableBool) || variable.compare("fullscreen") !=  0 || equal.compare("=") != 0 || (variableBool.compare("true") != 0 && variableBool.compare("false") != 0))
 		return false;
 	m_fullscreen = (variableBool.compare("true") == 0) ? true : false;
 
