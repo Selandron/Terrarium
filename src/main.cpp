@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "resourcemanager.hpp"
+#include "gamemanager.hpp"
+#include "gamestateloading.hpp"
 
 void benchmarck()
 {
@@ -71,10 +73,19 @@ void benchmarck()
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+    /*sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
     window.setFramerateLimit(144);
 
-    benchmarck();
+    //benchmarck();
+
+    std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
+    for (std::size_t i = 0; i < modes.size(); ++i)
+    {
+        sf::VideoMode mode = modes[i];
+        std::cout << "Mode #" << i << ": "
+                  << mode.width << "x" << mode.height << " - "
+                  << mode.bitsPerPixel << " bpp" << std::endl;
+    }
 
     while (window.isOpen()) 
     {
@@ -87,6 +98,21 @@ int main()
 
         window.clear();
         window.display();
+    }*/
+
+    tr::GameManager gameManager;
+    gameManager.Init();
+
+    gameManager.ChangeState(tr::GameStateLoading::Instance());
+
+    while (gameManager.Running())
+    {
+        gameManager.HandleEvents();
+        gameManager.Update();
+        gameManager.Draw();
     }
+
+    gameManager.Cleanup();
+
     return 0;
 }
