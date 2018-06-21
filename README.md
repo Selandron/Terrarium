@@ -9,11 +9,17 @@ If you are on Linux, just download the SFML packet and recompile the project ! (
 
 SFML 2.0 required at least. The latest the best !
 
-## Features (basic engine pass)
+## Features (basic engine)
 
 - [x] Simple and fast system for loading resources
 - [x] Simple game state system with a few states
-- [ ] Simple .ini to manage loading of the window
+- [x] Simple .ini to manage loading of the window
+
+## Features (loading & menu)
+
+- [ ] Create a loading screen
+- [ ] Create a Main Menu
+- [ ] Add the possibility of manage window options
 
 ## Features (map system)
 
