@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "resourcemanager.hpp"
+#include "gamemanager.hpp"
+#include "gamestateloading.hpp"
 
 void benchmarck()
 {
@@ -20,9 +22,9 @@ void benchmarck()
     std::cout << "STEP 2 -- UNLOAD BENCHMARK1 -- SHOULD WORK (result : no resources)" << std::endl;
     resMan->Clear();
     resMan->PrintManager();
-    std::cout << std::endl;
+    std::cout << std::endl; 
 
-    //std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+    //std::this_thread::sleep_for(std::chrono::milliseconds(5000)); 
 
     //STEP 3 -- LOAD BENCHMARK2 -- SHOULD WORK (result : scope benchmark2 loaded)
     std::cout << "STEP 3 -- LOAD BENCHMARK2 -- SHOULD WORK (result : scope benchmark2 loaded)" << std::endl;
@@ -65,59 +67,39 @@ void benchmarck()
     resMan->Clear();
     resMan->PrintManager();
     std::cout << std::endl;
+    resMan->Kill();
 
 }
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(500, 500), "SFML works!");
+    /*sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
     window.setFramerateLimit(144);
 
     //benchmarck();
 
-    tr::ResourceManager * resMan = tr::ResourceManager::GetInstance();
-    resMan->LoadFromFileXML("benchmark1.xml");
+    std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
+    for (std::size_t i = 0; i < modes.size(); ++i)
+    {
+        sf::VideoMode mode = modes[i];
+        std::cout << "Mode #" << i << ": "
+                  << mode.width << "x" << mode.height << " - "
+                  << mode.bitsPerPixel << " bpp" << std::endl;
+    }*/
 
-    sf::Texture * texture;
-    sf::SoundBuffer * buffer;
-    sf::Sound sound;
-    sf::Music * music;
-    sf::Text text;
-    sf::Font * font;
-    sf::Sprite sprite;
-    try
+    tr::GameManager gameManager;
+    gameManager.Init();
+
+    gameManager.ChangeState(tr::GameStateLoading::Instance());
+
+    while (gameManager.Running())
     {
-        texture = _GET_TEXTURE("mud_block_tileset");
-        buffer = _GET_SOUNDBUFFER("patakas-world");
-        music = _GET_MUSIC("power-bots-loop");
-        font = _GET_FONT("arial");
-        text.setFont(*font);
-        text.setString(*_GET_TEXT("text1", "first-key"));
-        sprite.setTexture(*texture);
-        sound.setBuffer(*buffer);
-        sound.play();
-        music->play();
-    }
-    catch (tr::ResourceNotFoundException & e)
-    {
-        std::cout << e.what() << std::endl;
+        gameManager.HandleEvents();
+        gameManager.Update();
+        gameManager.Draw();
     }
 
+    gameManager.Cleanup();
 
-
-    while (window.isOpen()) 
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear();
-        window.draw(sprite);
-        window.draw(text);
-        window.display();
-    }
     return 0;
 }
