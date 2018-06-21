@@ -12,7 +12,7 @@ SFML 2.0 required at least. The latest the best !
 ## Features (basic engine pass)
 
 - [x] Simple and fast system for loading resources
-- [ ] Simple game state system with a few states
+- [x] Simple game state system with a few states
 - [ ] Simple .ini to manage loading of the window
 
 ## Features (map system)
