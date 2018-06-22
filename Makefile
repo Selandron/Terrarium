@@ -8,7 +8,7 @@ STATES=gamemanager.o gamestateloading.o gamestatemenu.o
 EXEC=terrarium.exe
 HEADERS=-Iheaders\tinyxml2 -Iheaders\engine\manager -Iheaders\engine\errors -Iheaders\engine\states -Iheaders\states
 BIN=./bin/
-PATH_SFML=D:\Bibliotheque\SFML-2.5.0
+PATH_SFML=E:\DataEtienne\Biblio\SFML-2.5.0
 CFLAGS=-W -Wall -ansi -std=c++11 -I$(PATH_SFML)\include $(HEADERS)
 LDFLAGS=-L$(PATH_SFML)\lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
 

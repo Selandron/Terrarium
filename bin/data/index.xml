@@ -18,6 +18,9 @@
 			<file type="1" key="loading_screen_1">screen1.png</file>
 		</loading_screens>
 	</graphics>
+	<fonts>
+		<file type="6" key="arial">arial.ttf</file>
+	</fonts>
 	<texts>
 		<file type="5" key="loading_tips">loading_tips.xml</file>
 		<file type="5" key="loading_texts">loading_texts.xml</file>

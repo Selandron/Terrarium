@@ -15,7 +15,7 @@ namespace tr
 class GameState
 {
 	public:
-		virtual void Init() = 0;								//Init the state
+		virtual void Init(GameManager* game) = 0;				//Init the state
 		virtual void Cleanup() = 0;								//Cleanup the memory in the state
 
 		virtual void Pause() = 0;								//Pause the state

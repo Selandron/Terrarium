@@ -4,7 +4,7 @@
 
 tr::GameStateMenu tr::GameStateMenu::m_state;
 
-void tr::GameStateMenu::Init()
+void tr::GameStateMenu::Init(GameManager* game)
 {
 
 }

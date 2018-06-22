@@ -9,7 +9,7 @@ namespace tr
 class GameStateMenu : public tr::GameState
 {
 	public:
-		void Init();
+		void Init(GameManager* game);
 		void Cleanup();
 
 		void Pause();

@@ -12,7 +12,7 @@ namespace tr
 class GameStateLoading : public tr::GameState
 {
 	public:
-		void Init();
+		void Init(GameManager* game);
 		void Cleanup();
 
 		void Pause();
@@ -38,6 +38,9 @@ class GameStateLoading : public tr::GameState
 		sf::Text m_tipText;
 		sf::Text m_statusText;
 		std::thread m_loadingThread;
+		sf::Mutex m_mutex;
+		bool m_endLoad;
+		sf::Vector2u m_windowSize;
 };
 
 }

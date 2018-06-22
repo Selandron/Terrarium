@@ -35,7 +35,7 @@ void tr::GameManager::ChangeState(GameState* state)
 
 	// store and init the new state
 	m_states.push_back(state);
-	m_states.back()->Init();
+	m_states.back()->Init(this);
 }
 
 void tr::GameManager::PushState(GameState* state)
@@ -47,7 +47,7 @@ void tr::GameManager::PushState(GameState* state)
 
 	// store and init the new state
 	m_states.push_back(state);
-	m_states.back()->Init();
+	m_states.back()->Init(this);
 }
 
 void tr::GameManager::PopState()
@@ -86,9 +86,18 @@ void tr::GameManager::Draw()
 void tr::GameManager::Quit()
 {
 	m_running = false;
+	if (m_fullscreen)
+	{
+		delete m_window;
+		sf::ContextSettings settings(0, 0, m_antialiasingLevel);
+		m_window = new sf::RenderWindow(m_windowCaract, "Terrarium - A Terraria bad rip-off", sf::Style::Default, settings);
+	}
 	delete m_window;
-	sf::ContextSettings settings(0, 0, m_antialiasingLevel);
-	m_window = new sf::RenderWindow(m_windowCaract, "Terrarium - A Terraria bad rip-off", sf::Style::Default, settings);
+}
+
+sf::Vector2u tr::GameManager::GetSize()
+{
+	return (this->m_window) ? this->m_window->getSize() : sf::Vector2u(0, 0);
 }
 
 bool tr::GameManager::checkIni()

@@ -39,6 +39,8 @@ class GameManager
 
 		sf::RenderWindow * GetWindow() { return m_window; } 	//Get the reference on the window
 
+		sf::Vector2u GetSize();
+
 	private:
 		bool checkIni();
 

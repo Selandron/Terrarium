@@ -1,5 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <cstdlib>
+#include <iostream>
+#include <ctime>
 #include "resourcemanager.hpp"
 #include "gamemanager.hpp"
 #include "gamestateloading.hpp"
@@ -73,6 +76,7 @@ void benchmarck()
 
 int main()
 {
+    std::srand(std::time(nullptr));
     tr::GameManager gameManager;
     gameManager.Init();
 
